@@ -1,26 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Routes, Route } from "react-router-dom";
+import { ThemeProvider, createTheme, Divider } from "@mui/material";
+import { CssBaseline } from "@mui/material";
+import { useAppSelector } from "./hooks";
+import { RootState } from "./types";
 
-function App() {
+import Home from "./pages/Home";
+import Gallery from "./pages/Gallery";
+import { AppBar } from "./components";
+
+const App = () => {
+  const themeState = useAppSelector((state: RootState) => state.theme);
+  const theme = createTheme(themeState.theme);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={themeState.mode === "DARK" ? "DARK" : "LIGHT"}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <AppBar />
+        <Divider />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/gallery" element={<Gallery />} />
+        </Routes>
+      </ThemeProvider>
     </div>
   );
-}
+};
 
 export default App;
